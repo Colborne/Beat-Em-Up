@@ -9,6 +9,7 @@ public class PlayerInput : MonoBehaviour
     CharacterController controller;
     Vector3 moveDirection;
     public GameObject projectile;
+    public GameObject hitbox;
     
     [Header("User Input")]
     public Vector2 movementInput;
@@ -113,8 +114,19 @@ public class PlayerInput : MonoBehaviour
     {
         animator.SetBool("CanAttack", true);
     }
+
     public void disableAttack()
     {
         animator.SetBool("CanAttack", false);
+    }
+
+    public void DamageColliderOn()
+    {
+        hitbox.SetActive(true);
+    }
+
+    public void DamageColliderOff()
+    {
+        hitbox.SetActive(false);
     }
 }

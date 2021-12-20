@@ -66,7 +66,7 @@ public class EnemyAI : MonoBehaviour
                         Idle();  
                 }
 
-                if (playerInAlertRange && !playerInAttackRange && !animator.GetBool("isAttacking")) 
+                if (playerInAlertRange && !playerInAttackRange && !animator.GetBool("isAttacking") && transform.position.z != player.transform.position.z) 
                 {
                     if(canRange && Random.Range(0,100) == 0)
                     {
@@ -77,12 +77,16 @@ public class EnemyAI : MonoBehaviour
                         ChasePlayer(); 
                 }
                 
-                if (playerInAttackRange)
+                if (playerInAttackRange && transform.position.z == player.transform.position.z)
                     AttackPlayer(); 
-                
             
                 speed = Mathf.Lerp(speed, (transform.position - lastPosition).magnitude, 0.7f);
                 lastPosition = transform.position;
+                
+                if(player.transform.position.x > transform.position.x)
+                    transform.rotation = Quaternion.Euler(0,90,0);
+                else
+                    transform.rotation = Quaternion.Euler(0,-90,0);
             }
         }
     }
@@ -122,7 +126,7 @@ public class EnemyAI : MonoBehaviour
         Vector3 distanceToWalkPoint = agent.transform.position - walkPoint;
 
         //Walkpoint reached
-        if (distanceToWalkPoint.magnitude < 3f)
+        if (distanceToWalkPoint.magnitude < 1f)
         {
             animator.SetFloat("V", 0f);
             walkPointSet = false;
@@ -148,9 +152,9 @@ public class EnemyAI : MonoBehaviour
 
     private void ChasePlayer()
     {
-        agent.SetDestination(player.position);
+        agent.SetDestination(new Vector3(0,0,player.position.z));
         walkPoint = player.position;
-        animator.SetFloat("V", Mathf.Clamp(speed * 10f, 0f, 1f));
+        animator.SetFloat("V", 1f);
         patrolState = false;
     }
 
