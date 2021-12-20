@@ -8,6 +8,7 @@ public class PlayerInput : MonoBehaviour
     Animator animator;
     CharacterController controller;
     Vector3 moveDirection;
+    public GameObject projectile;
     
     [Header("User Input")]
     public Vector2 movementInput;
@@ -20,6 +21,7 @@ public class PlayerInput : MonoBehaviour
     public float gravityScale;
 
     bool canAttack;
+    
     private void OnEnable() 
     {
         if(inputSystem == null)
@@ -95,6 +97,7 @@ public class PlayerInput : MonoBehaviour
             Debug.Log(attackStr);
             animator.CrossFade(attackStr, 0f);
             SetCount(_count + 1);
+            Instantiate(projectile, transform.position + new Vector3(1f,1f,0), Quaternion.identity);
         }
         else if(animator.GetInteger("Count") == 0)
             animator.SetBool("CanAttack", true);
